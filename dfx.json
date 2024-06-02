@@ -1,0 +1,40 @@
+{
+  "canisters": {
+    "backend": {
+      "type": "custom",
+      "main": "src/backend/src/index.ts",
+      "candid": "src/backend/backend.did",
+      "build": "npx azle backend",
+      "wasm": ".azle/backend/backend.wasm",
+      "gzip": true,
+      "declarations": {
+        "output": "test/dfx_generated/backend",
+        "node_compatibility": true
+      },
+      "metadata": [
+        {
+          "name": "candid:service",
+          "path": "src/backend/backend.did"
+        },
+        {
+          "name": "cdk:name",
+          "content": "azle"
+        }
+      ]
+    },
+    "frontend": {
+      "dependencies": ["backend"],
+      "entrypoint": "src/frontend/out/index.html",
+      "source": ["src/frontend/out"],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
