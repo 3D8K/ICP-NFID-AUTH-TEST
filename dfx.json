@@ -1,26 +1,21 @@
 {
   "canisters": {
     "backend": {
-      "type": "custom",
-      "main": "src/backend/src/index.ts",
-      "candid": "src/backend/backend.did",
       "build": "npx azle backend",
-      "wasm": ".azle/backend/backend.wasm",
+      "candid": "src/backend/backend.did",
       "gzip": true,
-      "declarations": {
-        "output": "test/dfx_generated/backend",
-        "node_compatibility": true
-      },
-      "metadata": [
-        {
-          "name": "candid:service",
-          "path": "src/backend/backend.did"
+      "main": "src/backend/src/index.ts",
+      "tech_stack": {
+        "cdk": {
+          "azle": {}
         },
-        {
-          "name": "cdk:name",
-          "content": "azle"
+        "language": {
+          "javascript": {},
+          "typescript": {}
         }
-      ]
+      },
+      "type": "custom",
+      "wasm": ".azle/backend/backend.wasm"
     },
     "frontend": {
       "dependencies": ["backend"],
