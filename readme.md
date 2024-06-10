@@ -9,6 +9,9 @@ This project is a test stand for testing signatures and authorization via Web3 u
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Running the Project](#running-the-project)
+- [Docker Configuration](#docker-configuration)
+  - [Dockerfile](#dockerfile)
+  - [docker-compose.yml](#docker-composeyml)
 - [Contact](#contact)
 
 ## Description
@@ -17,14 +20,14 @@ This project provides a platform for testing signatures and authorizations for W
 
 ## Getting Started
 
-Follow these instructions to set up and run the project on your local machine.
+Follow these instructions to set up and run the project on your local machine using Docker Compose.
 
 ## Prerequisites
 
 Before you begin, ensure you have the following installed on your machine:
 
-- [Node.js and npm](https://nodejs.org/)
-- [DFINITY Canister SDK (dfx)](https://dfinity.org/developers)
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
 ## Installation
 
@@ -35,32 +38,67 @@ Before you begin, ensure you have the following installed on your machine:
    cd <repository_name>
    ```
 
-2. Install project dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Generate type files:
-   ```bash
-   dfx generate
-   ```
+2. Ensure your Docker daemon is running.
 
 ## Running the Project
 
-1. Start the DFX network in a separate terminal:
+Build and start the Docker containers:
 
-   ```bash
-   dfx start --clean --background
-   ```
+```bash
+docker-compose up --build -d
+```
 
-2. Navigate to the project root and deploy the canisters:
+The application should now be running and accessible on port 3000. Open your web browser and navigate to:
 
-   ```bash
-   dfx deploy
-   ```
+```arduino
+http://localhost:3000
+```
 
-3. Wait for the build to complete. Once done, follow the URLs provided in the terminal to access your deployed project.
+If you need to stop the containers, you can use:
 
-   The terminal will display URLs where you can access and interact with your project.
-   Make sure to copy these URLs and open them in your web browser.
+```bash
+docker-compose down
+```
+
+## Docker Configuration
+
+### Dockerfile
+
+```dockerfile
+FROM node:19-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+COPY . .
+
+RUN npm i
+
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["npm", "run", "start"]
+```
+
+### docker-compose.yml
+
+```yaml
+version: "3.8"
+
+services:
+  nextjs-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    working_dir: /app/src/frontend
+    command: >
+      sh -c "npm install &&
+             npm run build &&
+             npm run start"
+```
