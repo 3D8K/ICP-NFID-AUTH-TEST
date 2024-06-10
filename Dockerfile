@@ -1,15 +1,23 @@
-FROM node:latest
+# Используем официальный Node.js образ
+FROM node:19-alpine
 
+# Устанавливаем рабочую директорию в контейнере
 WORKDIR /app
 
-COPY ./src/frontend/package*.json ./
+# Копируем package.json и package-lock.json в рабочую директорию
+COPY package*.json ./
 
-RUN npm install
+# Копируем все содержимое текущей директории в рабочую директорию контейнера
+COPY . .
 
-COPY ./src/frontend/. .
+# Устанавливаем зависимости
+RUN npm i
 
-COPY ./src/declarations/backend/ ../declarations/backend/
-
+# Переходим в директорию frontend и собираем проект
 RUN npm run build
 
-CMD ["npm", "start"];
+# Открываем порты, которые будут использоваться приложением
+EXPOSE 3000
+
+# Команда для запуска приложения
+CMD ["npm", "run", "start"]
