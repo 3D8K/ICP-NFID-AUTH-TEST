@@ -22,6 +22,8 @@ target/
 node_modules/
 dist/
 .svelte-kit/
+./src/frontend/.next
+./src/frontend/out
 
 # environment variables
 .env
